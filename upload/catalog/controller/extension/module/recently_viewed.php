@@ -27,6 +27,10 @@ class ControllerExtensionModuleRecentlyViewed extends Controller {
 			$setting['limit'] = 4;
 		}
 
+		if ($setting['name']) {
+			$data['heading_title'] = $setting['name'];
+		}
+
 		$results  = array();
 		$setting['products'] = array();
 		if ($this->customer->isLogged()) {
