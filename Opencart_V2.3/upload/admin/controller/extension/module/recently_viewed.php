@@ -34,6 +34,8 @@ class ControllerExtensionModuleRecentlyViewed extends Controller {
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
 		$data['entry_name'] = $this->language->get('entry_name');
+		$data['entry_title'] = $this->language->get('entry_title');
+		$data['entry_title_help'] = $this->language->get('entry_title_help');
 		$data['entry_limit'] = $this->language->get('entry_limit');
 		$data['entry_width'] = $this->language->get('entry_width');
 		$data['entry_height'] = $this->language->get('entry_height');
@@ -53,6 +55,12 @@ class ControllerExtensionModuleRecentlyViewed extends Controller {
 			$data['error_name'] = '';
 		}
 
+		if (isset($this->error['title'])) {
+			$data['error_title'] = $this->error['title'];
+		} else {
+			$data['error_title'] = '';
+		}
+
 		if (isset($this->error['width'])) {
 			$data['error_width'] = $this->error['width'];
 		} else {
@@ -64,6 +72,10 @@ class ControllerExtensionModuleRecentlyViewed extends Controller {
 		} else {
 			$data['error_height'] = '';
 		}
+
+
+		$this->load->model('localisation/language');
+		$data['languages'] = $this->model_localisation_language->getLanguages();
 
 		$data['breadcrumbs'] = array();
 
@@ -111,6 +123,14 @@ class ControllerExtensionModuleRecentlyViewed extends Controller {
 			$data['name'] = '';
 		}
 
+		if (isset($this->request->post['title'])) {
+			$data['title'] = $this->request->post['title'];
+		} elseif (!empty($module_info)) {
+			$data['title'] = $module_info['title'];
+		} else {
+			$data['title'] = array();
+		}
+
 		if (isset($this->request->post['limit'])) {
 			$data['limit'] = $this->request->post['limit'];
 		} elseif (!empty($module_info)) {
@@ -156,6 +176,12 @@ class ControllerExtensionModuleRecentlyViewed extends Controller {
 
 		if ((utf8_strlen($this->request->post['name']) < 3) || (utf8_strlen($this->request->post['name']) > 64)) {
 			$this->error['name'] = $this->language->get('error_name');
+		}
+
+		foreach($this->request->post['title'] as $lang_key=>$lang_val){
+			if(empty($lang_val) || trim($lang_val) == ""){
+				$this->error['title'][$lang_key] = $this->language->get('error_title');
+			}
 		}
 
 		return !$this->error;

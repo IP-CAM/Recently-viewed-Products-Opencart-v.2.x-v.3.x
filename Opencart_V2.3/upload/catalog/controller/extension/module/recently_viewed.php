@@ -27,8 +27,9 @@ class ControllerExtensionModuleRecentlyViewed extends Controller {
 			$setting['limit'] = 4;
 		}
 
-		if ($setting['name']) {
-			$data['heading_title'] = $setting['name'];
+		// load language specific title if added by admin
+		if(isset($setting['title'][$this->config->get('config_language_id')])) {
+			$data['heading_title'] = $setting['title'][$this->config->get('config_language_id')];
 		}
 
 		$results  = array();

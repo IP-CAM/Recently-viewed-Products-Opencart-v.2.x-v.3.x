@@ -26,12 +26,30 @@
 			</div>
 			<div class="panel-body">
 				<form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-recently_viewed" class="form-horizontal">
-					<div class="form-group">
-						<label class="col-sm-2 control-label" for="input-name"><?php echo $entry_name; ?></label>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name"><?php echo  $entry_name; ?></label>
 						<div class="col-sm-10">
 							<input type="text" name="name" value="<?php echo $name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
-							<?php if ($error_name) { ?>
+							<?php if(!empty($error_name)) { ?>
 							<div class="text-danger"><?php echo $error_name; ?></div>
+							<?php } ?>
+						</div>
+					</div>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label">
+							<span data-toggle="tooltip" title="<?php echo $entry_title_help; ?>"><?php echo $entry_title; ?></span>
+						</label>
+						<div class="col-sm-10">
+							<?php foreach($languages as $language) { ?>
+								<div class="input-group">
+									<span class="input-group-addon">
+										<img src="language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png" title="<?php echo $language['title']; ?>" />
+									</span>
+									<input type="text" name="title[<?php echo $language['language_id']; ?>]" value="<?php if(isset($title[$language['language_id']])) { echo $title[$language['language_id']]; } ?>" placeholder="<?php echo $entry_title; ?>" class="form-control" />
+								</div>
+								<?php if(!empty($error_title[$language['language_id']])) { ?>
+								<div class="text-danger"><?php echo $error_title[$language['language_id']]; ?></div>
+								<?php } ?>
 							<?php } ?>
 						</div>
 					</div>
